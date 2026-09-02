@@ -1,0 +1,33 @@
+{
+  "keterangan": "Pemicu keputusan: kondisi yang kalau terlampaui memaksa keputusan diambil, bukan sekadar peringatan.",
+  "pemicu": [
+    {"kode":"T01","nama":"Saksi di bawah aman","ukuran":"saksi_cakupan","arah":"<","ambang":0.95,"tingkat":"merah",
+     "aksi":"Kunci anggaran saksi sekarang; rekrutmen mulai dari TPS zona BASIS.","pj":"Koordinator saksi","tenggat_hari":14},
+    {"kode":"T02","nama":"Selisih ke lawan menipis","ukuran":"margin_poin","arah":"<","ambang":5,"tingkat":"merah",
+     "aksi":"Aktifkan jalur kehadiran + door-to-door di daerah IMBANG; jadwalkan kunjungan kandidat mingguan.","pj":"Manajer kampanye","tenggat_hari":7},
+    {"kode":"T03","nama":"Peluang menang turun","ukuran":"peluang","arah":"<","ambang":60,"tingkat":"merah",
+     "aksi":"Rapat darurat: geser anggaran ke daerah dengan biaya per suara terendah.","pj":"Ketua tim","tenggat_hari":3},
+    {"kode":"T04","nama":"Kelengkapan data kurang","ukuran":"kelengkapan","arah":"<","ambang":0.6,"tingkat":"kuning",
+     "aksi":"Hentikan klaim proyeksi; kerahkan tim data mengisi survei & door-to-door.","pj":"Tim data","tenggat_hari":10},
+    {"kode":"T05","nama":"Ranting belum lengkap","ukuran":"ranting_kelengkapan","arah":"<","ambang":0.9,"tingkat":"kuning",
+     "aksi":"Bentuk ranting & anak ranting yang kosong; kader ranting sekaligus disiapkan jadi saksi.","pj":"Sekretariat koalisi","tenggat_hari":30},
+    {"kode":"T06","nama":"Anomali data menumpuk","ukuran":"anomali","arah":">","ambang":5,"tingkat":"kuning",
+     "aksi":"Bekukan penambahan anggaran di wilayah beranomali sampai verifikasi selesai.","pj":"Tim data","tenggat_hari":7},
+    {"kode":"T07","nama":"Risiko terkonsentrasi","ukuran":"wilayah_efektif","arah":"<","ambang":8,"tingkat":"kuning",
+     "aksi":"Sebar usaha ke wilayah penyangga; jangan bergantung pada satu lumbung suara.","pj":"Manajer kampanye","tenggat_hari":21},
+    {"kode":"T08","nama":"VaR melebihi selisih","ukuran":"var_lebih_besar_dari_margin","arah":">","ambang":0,"tingkat":"merah",
+     "aksi":"Kemenangan tidak tahan guncangan: prioritaskan saksi & kehadiran, tunda belanja citra.","pj":"Ketua tim","tenggat_hari":7},
+    {"kode":"T09","nama":"Ormas condong ke lawan","ukuran":"ormas_rasio","arah":"<","ambang":0.5,"tingkat":"kuning",
+     "aksi":"Jadwalkan audiensi pengurus ormas terbesar; bawa program, bukan uang.","pj":"Tim tokoh","tenggat_hari":21},
+    {"kode":"T10","nama":"Biaya per suara membengkak","ukuran":"biaya_rasio","arah":">","ambang":1.5,"tingkat":"kuning",
+     "aksi":"Audit pos belanja; hentikan program dengan biaya per suara di atas 2,5x dasar.","pj":"Bendahara","tenggat_hari":14},
+    {"kode":"T11","nama":"Waktu menipis","ukuran":"hari_menuju","arah":"<","ambang":30,"tingkat":"merah",
+     "aksi":"Kunci rencana; hanya eksekusi kehadiran pemilih dan pengamanan suara.","pj":"Ketua tim","tenggat_hari":1},
+    {"kode":"T12","nama":"Benchmark kesiapan rendah","ukuran":"benchmark","arah":"<","ambang":70,"tingkat":"kuning",
+     "aksi":"Perbaiki pilar dengan skor terendah lebih dulu — urutannya sudah dihitung di tab Benchmark.","pj":"Manajer kampanye","tenggat_hari":21},
+    {"kode":"T13","nama":"Daerah imbang banyak","ukuran":"daerah_imbang","arah":">","ambang":3,"tingkat":"kuning",
+     "aksi":"Bentuk satuan tugas khusus per daerah imbang dengan target suara tertulis.","pj":"Koordinator wilayah","tenggat_hari":14},
+    {"kode":"T14","nama":"Sumber data masih contoh","ukuran":"data_contoh","arah":">","ambang":0,"tingkat":"merah",
+     "aksi":"Ganti seluruh data/*.csv dengan data resmi KPU sebelum keputusan apa pun diambil.","pj":"Tim data","tenggat_hari":7}
+  ]
+}

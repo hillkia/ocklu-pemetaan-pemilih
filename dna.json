@@ -1,0 +1,19 @@
+{
+  "nama": "DNA Worker Pemenangan Ocklu",
+  "versi": "1.0",
+  "aturan": [
+    {"kode":"D1","nama":"Nol karangan","isi":"Setiap perintah wajib menunjuk angka rujukan dari data.json. Tanpa rujukan, perintah dibuang.","penegakan":"otomatis"},
+    {"kode":"D2","nama":"Berhenti kalau data kurang","isi":"Bila kelengkapan data di bawah batas konfigurasi, worker tidak boleh menyatakan peluang menang atau target baru; hanya boleh memerintahkan pengisian data.","penegakan":"otomatis"},
+    {"kode":"D3","nama":"Hukum lebih dulu","isi":"Dilarang menghasilkan perintah politik uang, mahar, intimidasi, kampanye SARA, memakai data pribadi pemilih (NIK/alamat/nomor), atau menyerang keyakinan agama siapa pun.","penegakan":"otomatis"},
+    {"kode":"D4","nama":"Bisa dieksekusi","isi":"Perintah wajib menyebut: siapa yang mengerjakan, apa langkahnya, kapan tenggatnya, berapa biayanya, berapa dampak suaranya.","penegakan":"otomatis"},
+    {"kode":"D5","nama":"Uang dibandingkan","isi":"Perintah berbiaya wajib mencantumkan Rp per suara dan dibandingkan dengan biaya dasar kampanye.","penegakan":"otomatis"},
+    {"kode":"D6","nama":"Jaga dulu, baru rebut","isi":"Suara yang sudah ada (saksi, basis) diprioritaskan di atas perebutan wilayah baru.","penegakan":"peringkat"},
+    {"kode":"D7","nama":"Satu wilayah satu perintah per kategori","isi":"Tidak boleh menumpuk perintah sejenis di wilayah yang sama pada satu siklus.","penegakan":"otomatis"},
+    {"kode":"D8","nama":"Transparansi otak","isi":"Worker wajib menyebut otak yang dipakai. Bila otak AI mati, katakan mati — jangan mengarang narasi.","penegakan":"otomatis"},
+    {"kode":"D9","nama":"Ikuti risiko","isi":"Wilayah dengan kontribusi risiko tertinggi wajib mendapat perintah lindung nilai.","penegakan":"otomatis"},
+    {"kode":"D10","nama":"Jujur kalau kalah","isi":"Bila proyeksi kalah, worker menyatakannya di baris pertama, tanpa dibungkus.","penegakan":"otomatis"},
+    {"kode":"D11","nama":"Hormati ormas & keyakinan","isi":"Pendekatan ke ormas berbasis silaturahmi dan program nyata; dilarang menyusun taktik yang mengeksploitasi iman atau memecah jemaah.","penegakan":"otomatis"}
+  ],
+  "kata_terlarang": ["serangan fajar","politik uang","bagi amplop","bagi-bagi uang","beli suara","sogok","mahar politik","intimidasi","sara","fitnah","hoaks","nik pemilih","data pribadi pemilih","black campaign"],
+  "ambang": {"rp_per_suara_maks_kali_dasar": 2.5, "prioritas_minimum": 0.05}
+}

@@ -1,0 +1,455 @@
+<!doctype html>
+<html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Ocklu Pemetaan Pemilih — Command Center</title>
+<style>
+:root{--bg:#0a0e14;--pnl:#111823;--pnl2:#161f2e;--ln:#22304a;--tx:#e6edf7;--mut:#8296b3;
+--ok:#22c55e;--wr:#f59e0b;--bd:#ef4444;--ac:#38bdf8;--ac2:#a78bfa}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--tx);
+font:13px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Inter,sans-serif}
+header{position:sticky;top:0;z-index:20;background:linear-gradient(180deg,#0d1420,#0a0e14);border-bottom:1px solid var(--ln);padding:10px 16px}
+.hd{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.logo{font-weight:800;letter-spacing:.5px;font-size:15px;cursor:pointer}.logo span{color:var(--ac)}
+.pill{font-size:11px;padding:3px 9px;border-radius:99px;border:1px solid var(--ln);color:var(--mut);cursor:pointer}
+.pill:hover{border-color:var(--ac);color:var(--ac)}
+.pill.sim{border-color:var(--wr);color:var(--wr);background:#f59e0b14}
+.pill.live{border-color:var(--ok);color:var(--ok);background:#22c55e14}
+nav{display:flex;gap:2px;flex-wrap:wrap;margin-top:9px}
+nav button{background:transparent;border:1px solid transparent;color:var(--mut);padding:6px 11px;border-radius:7px;cursor:pointer;font-size:12px;font-weight:600}
+nav button:hover{color:var(--tx);background:#ffffff08}
+nav button.on{background:var(--pnl2);color:var(--ac);border-color:var(--ln)}
+main{padding:16px;max-width:1560px;margin:0 auto}
+.warn{background:#f59e0b12;border:1px solid #f59e0b44;border-left:3px solid var(--wr);padding:9px 12px;border-radius:8px;margin-bottom:14px;font-size:12px}
+.warn b{color:var(--wr)}.warn ul{margin:6px 0 0;padding-left:18px;color:var(--mut)}
+.warn li{cursor:pointer}.warn li:hover{color:var(--tx);text-decoration:underline}
+.grid{display:grid;gap:12px}.g4{grid-template-columns:repeat(4,1fr)}.g3{grid-template-columns:repeat(3,1fr)}
+.g2{grid-template-columns:repeat(2,1fr)}.g21{grid-template-columns:2fr 1fr}.g12{grid-template-columns:1fr 2.4fr}
+@media(max-width:1100px){.g4,.g3,.g2,.g21,.g12{grid-template-columns:1fr 1fr}}
+@media(max-width:680px){.g4,.g3,.g2,.g21,.g12{grid-template-columns:1fr}}
+.card{background:var(--pnl);border:1px solid var(--ln);border-radius:12px;padding:14px}
+.card h3{margin:0 0 10px;font-size:12px;text-transform:uppercase;letter-spacing:.8px;color:var(--mut);font-weight:700}
+.klik{cursor:pointer;transition:border-color .12s,transform .12s}
+.klik:hover{border-color:var(--ac);transform:translateY(-1px)}
+.kpi .v{font-size:26px;font-weight:800;letter-spacing:-.5px}
+.kpi .s{font-size:11px;color:var(--mut);margin-top:3px}
+.kpi .go{font-size:10px;color:var(--ac);margin-top:6px;opacity:.001}
+.klik:hover .go{opacity:1}
+.up{color:var(--ok)}.dn{color:var(--bd)}.wrn{color:var(--wr)}.ac{color:var(--ac)}
+table{width:100%;border-collapse:collapse;font-size:12px}
+th{text-align:left;color:var(--mut);font-weight:600;padding:7px 8px;border-bottom:1px solid var(--ln);cursor:pointer;white-space:nowrap;position:sticky;top:0;background:var(--pnl);z-index:2}
+th:hover{color:var(--ac)}td{padding:6px 8px;border-bottom:1px solid #ffffff08;white-space:nowrap}
+tr.klik:hover td{background:#38bdf812}
+.num{text-align:right;font-variant-numeric:tabular-nums}
+.bar{height:6px;background:#ffffff12;border-radius:4px;overflow:hidden;min-width:56px;cursor:pointer}
+.bar i{display:block;height:100%;border-radius:4px}
+.tag{font-size:10px;padding:2px 7px;border-radius:99px;font-weight:700;letter-spacing:.3px;cursor:pointer}
+.tag:hover{outline:1px solid currentColor}
+.z0{background:#22c55e22;color:#4ade80}.z1{background:#ef444422;color:#f87171}
+.z2{background:#38bdf822;color:#7dd3fc}.z3{background:#8296b322;color:#8296b3}
+canvas{display:block;width:100%;border-radius:10px;background:#070b11;cursor:crosshair}
+.legend{display:flex;gap:12px;flex-wrap:wrap;font-size:11px;color:var(--mut);margin-top:8px}
+.legend span{cursor:pointer}.legend span:hover{color:var(--ac)}
+.legend i{width:10px;height:10px;border-radius:3px;display:inline-block;margin-right:5px;vertical-align:-1px}
+select,input,textarea{background:var(--pnl2);border:1px solid var(--ln);color:var(--tx);border-radius:7px;padding:5px 8px;font-size:12px;font-family:inherit}
+input[type=range]{padding:0;width:100%}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--ac)}
+.tip{position:fixed;pointer-events:none;background:#0f1826f2;border:1px solid var(--ln);border-radius:8px;padding:8px 10px;font-size:11px;z-index:80;display:none;box-shadow:0 8px 24px #0008;max-width:270px}
+.row{display:flex;justify-content:space-between;gap:10px;padding:4px 0;border-bottom:1px solid #ffffff08}
+.row:last-child{border:0}.row b{font-variant-numeric:tabular-nums}
+.row.klik:hover{background:#38bdf80f}
+.sub{color:var(--mut);font-size:11px}
+.gauge{position:relative;height:8px;background:#ffffff12;border-radius:5px;margin:8px 0 4px}
+.gauge i{position:absolute;height:100%;border-radius:5px;background:linear-gradient(90deg,#ef4444,#f59e0b,#22c55e)}
+.gauge u{position:absolute;top:-4px;width:2px;height:16px;background:#fff;opacity:.7}
+.scroll{max-height:560px;overflow:auto}
+.hide{display:none}
+.mini{font-size:11px;color:var(--mut);margin-top:6px;line-height:1.45}
+.w{color:var(--ac);cursor:pointer;border-bottom:1px dotted #38bdf866}
+.w:hover{color:#7dd3fc}
+button.act{background:var(--ac);color:#04121c;border:0;padding:7px 12px;border-radius:7px;font-weight:700;cursor:pointer;font-size:12px}
+button.act:hover{background:#7dd3fc}
+button.gh{background:transparent;border:1px solid var(--ln);color:var(--tx);padding:6px 11px;border-radius:7px;cursor:pointer;font-size:12px}
+button.gh:hover{border-color:var(--ac);color:var(--ac)}
+button.dgr{background:#ef444418;border:1px solid #ef444455;color:#f87171;border-radius:6px;cursor:pointer;padding:2px 8px;font-size:11px}
+.ovl{position:fixed;inset:0;background:#04070cd9;z-index:60;display:flex;align-items:flex-start;justify-content:center;padding:40px 16px;overflow:auto}
+.mdl{background:var(--pnl);border:1px solid var(--ln);border-radius:14px;max-width:1080px;width:100%;padding:16px;box-shadow:0 24px 60px #000a}
+.mdl h2{margin:0 0 4px;font-size:17px}
+.mdlx{float:right;cursor:pointer;color:var(--mut);font-size:20px;line-height:1}
+.mdlx:hover{color:var(--bd)}
+.stab{display:flex;gap:4px;flex-wrap:wrap;margin:12px 0}
+.stab button{background:var(--pnl2);border:1px solid var(--ln);color:var(--mut);padding:5px 10px;border-radius:6px;cursor:pointer;font-size:11px;font-weight:600}
+.stab button.on{color:var(--ac);border-color:var(--ac)}
+.toast{position:fixed;right:16px;bottom:16px;background:var(--pnl2);border:1px solid var(--ok);color:var(--tx);
+padding:10px 14px;border-radius:10px;z-index:90;font-size:12px;box-shadow:0 8px 24px #0008;display:none}
+.toast.err{border-color:var(--bd)}
+.gridin td{padding:3px 4px}.gridin input{width:100%;min-width:70px}
+.chip{display:inline-block;background:var(--pnl2);border:1px solid var(--ln);border-radius:99px;padding:2px 9px;font-size:11px;margin:0 4px 4px 0;cursor:pointer}
+.chip.on{border-color:var(--ac);color:var(--ac)}
+.drop{border:1px dashed var(--ln);border-radius:10px;padding:14px;text-align:center;color:var(--mut);cursor:pointer}
+.drop:hover,.drop.hot{border-color:var(--ac);color:var(--ac)}
+@media print{header,nav,.noprint{display:none}body{background:#fff;color:#000}.card{border-color:#ccc;background:#fff}}
+</style></head><body>
+<header><div class="hd">
+  <div class="logo" onclick="go('ringkas')">OCKLU <span>PEMETAAN PEMILIH</span></div>
+  <span class="pill" id="pWil" onclick="go('konfig')"></span>
+  <span class="pill" id="pHari" onclick="go('konfig')"></span>
+  <span class="pill" id="pSum" onclick="go('konfig')"></span>
+  <span class="pill" id="pLengkap" onclick="go('data')"></span>
+  <span style="flex:1"></span>
+  <button class="gh noprint" onclick="hitungUlang()">Hitung ulang</button>
+  <button class="gh noprint" onclick="window.print()">Cetak</button>
+</div><nav id="nav"></nav></header>
+<main>
+<div class="warn" id="warn"></div>
+<section id="v-ringkas"></section><section id="v-peta" class="hide"></section>
+<section id="v-wilayah" class="hide"></section><section id="v-target" class="hide"></section>
+<section id="v-kursi" class="hide"></section><section id="v-drone" class="hide"></section>
+<section id="v-saksi" class="hide"></section><section id="v-isu" class="hide"></section>
+<section id="v-anggaran" class="hide"></section><section id="v-simulasi" class="hide"></section>
+<section id="v-data" class="hide"></section><section id="v-konfig" class="hide"></section>
+</main>
+<div class="tip" id="tip"></div><div class="toast" id="toast"></div><div id="ovl"></div>
+<script>
+const TAB=[['ringkas','Ringkas'],['peta','Peta & Drone'],['wilayah','Wilayah'],['target','Target & Gap'],
+['kursi','Kursi (Sainte-Laguë)'],['drone','Sistem Drone'],['saksi','Saksi TPS'],['isu','Isu'],
+['anggaran','Anggaran'],['simulasi','Simulasi'],['data','Input Data'],['konfig','Konfigurasi']];
+let D=null,SEL=null,SORT={k:'dpt',d:-1},LAYER='ikc',AKTIF='ringkas',
+    FILTER={zona:null,dapil:null,isu:null,cari:''},EDIT={},KONF=null,BERKAS=null;
+const n0=v=>v==null||isNaN(v)?'—':Math.round(v).toLocaleString('id-ID');
+const n1=v=>v==null||isNaN(v)?'—':(+v).toLocaleString('id-ID',{maximumFractionDigits:1});
+const pc=v=>v==null||isNaN(v)?'—':(v*100).toFixed(1)+'%';
+const pp=v=>v==null||isNaN(v)?'—':(+v).toFixed(1)+'%';
+const rp=v=>v==null||isNaN(v)?'—':'Rp '+Math.round(v).toLocaleString('id-ID');
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const erf=x=>{const s=x<0?-1:1;x=Math.abs(x);const t=1/(1+0.3275911*x);
+ return s*(1-((((1.061405429*t-1.453152027)*t+1.421413741)*t-0.284496736)*t+0.254829592)*t*Math.exp(-x*x))};
+const cdf=z=>0.5*(1+erf(z/Math.SQRT2));
+const zcls=z=>!z?'z3':z.startsWith('BASIS')?'z0':z.startsWith('GARAP')?'z1':z.startsWith('AMANKAN')?'z2':'z3';
+const warna=v=>{v=Math.max(0,Math.min(1,v||0));const a=[239,68,68],b=[245,158,11],c=[34,197,94];
+ const m=v<.5?a.map((x,i)=>x+(b[i]-x)*v*2):b.map((x,i)=>x+(c[i]-x)*(v-.5)*2);
+ return'rgb('+m.map(Math.round).join(',')+')'};
+const K=()=>D.konfigurasi.kandidat_kita;
+const wil=k=>D.wilayah.find(w=>w.kode===k);
+function toast(m,err){const t=document.getElementById('toast');t.textContent=m;t.className='toast'+(err?' err':'');
+ t.style.display='block';clearTimeout(t._t);t._t=setTimeout(()=>t.style.display='none',3200)}
+function tip(e,html){const t=document.getElementById('tip');if(!html){t.style.display='none';return}
+ t.innerHTML=html;t.style.display='block';t.style.left=Math.min(innerWidth-280,e.clientX+14)+'px';t.style.top=(e.clientY+14)+'px'}
+function go(k,opt){AKTIF=k;if(opt&&opt.filter)Object.assign(FILTER,opt.filter);
+ TAB.forEach(([t])=>document.getElementById('v-'+t).classList.toggle('hide',t!==k));
+ [...document.querySelectorAll('#nav button')].forEach(b=>b.classList.toggle('on',b.dataset.k===k));
+ if(k==='wilayah')vWilayah();if(k==='data')vData();if(k==='konfig')vKonfig();
+ if(k==='peta'||k==='drone'||k==='ringkas')requestAnimationFrame(peta);scrollTo(0,0)}
+const api=async(u,body)=>{const r=await fetch(u,body?{method:'POST',headers:{'Content-Type':'application/json'},
+ body:JSON.stringify(body)}:undefined);return r.json()};
+async function muat(){D=await api('data.json?'+Date.now());render()}
+async function hitungUlang(){const r=await api('/api/hitung');await muat();
+ toast(r.ok?'Hitung ulang selesai':'Gagal hitung: '+(r.galat||'').slice(0,90),!r.ok)}
+function modal(judul,isi,lebar){document.getElementById('ovl').innerHTML=
+ '<div class="ovl" onclick="if(event.target===this)tutup()"><div class="mdl" style="max-width:'+(lebar||1080)+'px">'+
+ '<span class="mdlx" onclick="tutup()">×</span><h2>'+judul+'</h2><div id="mdlIsi">'+isi+'</div></div></div>'}
+function tutup(){document.getElementById('ovl').innerHTML=''}
+addEventListener('keydown',e=>{if(e.key==='Escape')tutup()});
+muat();
+
+/* ================= RENDER UTAMA ================= */
+function render(){const m=D.meta;
+ document.getElementById('nav').innerHTML=TAB.map(([k,l])=>'<button data-k="'+k+'" onclick="go(\''+k+'\')" class="'+(k===AKTIF?'on':'')+'">'+l+'</button>').join('');
+ document.getElementById('pWil').textContent=m.wilayah_kerja;
+ document.getElementById('pHari').textContent=m.hari_menuju+' hari menuju '+m.tanggal_pemungutan;
+ const ps=document.getElementById('pSum');ps.textContent=m.sumber_data==='contoh'?'DATA SIMULASI':'DATA RESMI';
+ ps.className='pill '+(m.sumber_data==='contoh'?'sim':'live');
+ document.getElementById('pLengkap').textContent='kelengkapan data '+pc(m.kelengkapan_data);
+ document.getElementById('warn').innerHTML='<b>Pagar data — klik untuk memperbaiki</b><ul>'+
+  m.peringatan.map((p,i)=>'<li onclick="perbaiki('+i+')">'+esc(p)+'</li>').join('')+'</ul>';
+ vRingkas();vPeta();vWilayah();vTarget();vKursi();vDrone();vSaksi();vIsu();vAnggaran();vSimulasi();(window.EXTRA||[]).forEach(f=>{try{f()}catch(e){console.warn('EXTRA',e)}});
+ TAB.forEach(([t])=>document.getElementById('v-'+t).classList.toggle('hide',t!==AKTIF));
+ [...document.querySelectorAll('#nav button')].forEach(b=>b.classList.toggle('on',b.dataset.k===AKTIF));
+ requestAnimationFrame(peta)}
+function perbaiki(i){const p=D.meta.peringatan[i];
+ if(/SUMBER DATA/i.test(p))return go('konfig');
+ if(/tanpa survei/i.test(p))return bukaTabel('survei.csv');
+ if(/relawan/i.test(p))return bukaTabel('relawan.csv');
+ if(/tokoh/i.test(p))return modal('Komponen tokoh',
+  '<p>Belum ada berkas pendukung tokoh, jadi bobotnya dinormalkan ke komponen lain — tidak ditebak.</p>'+
+  '<p class="sub">Untuk mengaktifkannya: buat <code>data/tokoh.csv</code> berisi kode_wilayah, nama tokoh, jangkauan, dan skor dukungan, lalu beri tahu agar mesin membacanya.</p>');
+ if(/Kelengkapan data/i.test(p))return go('data');
+ go('data')}
+const kpi=(t,v,s,c,aksi)=>'<div class="card kpi'+(aksi?' klik':'')+'"'+(aksi?' onclick="'+aksi+'"':'')+'><h3>'+t+'</h3>'+
+ '<div class="v '+(c||'')+'">'+v+'</div><div class="s">'+(s||'')+'</div>'+(aksi?'<div class="go">klik untuk buka →</div>':'')+'</div>';
+const wlink=w=>'<span class="w" onclick="event.stopPropagation();bukaWilayah(\''+w.kode+'\')">'+esc(w.nama)+'</span>';
+const ztag=z=>'<span class="tag '+zcls(z)+'" onclick="event.stopPropagation();go(\'wilayah\',{filter:{zona:\''+z+'\'}})">'+esc(z.split(' —')[0])+'</span>';
+
+/* ================= RINGKAS ================= */
+function vRingkas(){const r=D.ringkas,menang=r.gap<=0;
+ document.getElementById('v-ringkas').innerHTML=
+ '<div class="grid g4">'+
+  kpi('Proyeksi suara kita',n0(r.proyeksi_kita),pp(r.persen_kita)+' suara sah · turnout '+pc(r.turnout),menang?'up':'wrn',"go('wilayah')")+
+  kpi('Target menang',n0(r.target),'lawan terkuat '+esc(r.lawan_terkuat||'—')+' · margin aman '+pc(D.konfigurasi.margin_aman),'',"go('target')")+
+  kpi(menang?'Surplus':'Kekurangan suara',n0(Math.abs(r.gap)),menang?'unggul '+pp(r.margin_share)+' poin':'butuh '+pp(-r.margin_share)+' poin',menang?'up':'dn',"go('target')")+
+  kpi('Peluang menang',r.peluang_menang==null?'data kurang':pp(r.peluang_menang),
+      r.peluang_menang==null?'kelengkapan data di bawah batas — klik untuk isi data':'±'+pp(r.sd_total)+' simpangan (n='+n0(r.n_sampel_total)+')',
+      r.peluang_menang==null?'wrn':(r.peluang_menang>60?'up':'dn'),r.peluang_menang==null?"go('data')":"go('simulasi')")+
+ '</div><div class="grid g4" style="margin-top:12px">'+
+  kpi('DPT',n0(r.dpt),n0(r.tps)+' TPS · '+n0(D.konfigurasi.maks_pemilih_per_tps)+' pemilih/TPS','',"bukaTabel('wilayah.csv')")+
+  kpi('Saksi TPS',pc(D.saksi.cakupan),n0(D.saksi.kurang)+' kurang · '+rp(D.saksi.biaya_kurang),D.saksi.cakupan>=.9?'up':'wrn',"go('saksi')")+
+  kpi('Biaya per suara',rp(D.anggaran.biaya_per_suara),'realisasi '+rp(D.anggaran.realisasi),'',"go('anggaran')")+
+  kpi('Drone',n0(D.drone.sortie)+' sortie',D.drone.hari+' hari · '+n1(D.drone.total_target_km2)+' km² · '+rp(D.drone.biaya),'',"go('drone')")+
+ '</div><div class="grid g21" style="margin-top:12px">'+
+ '<div class="card"><h3>Peta kekuatan — klik wilayah untuk membuka & mengubah</h3><canvas id="cv" height="430"></canvas>'+
+  '<div class="legend"><span onclick="go(\'peta\')"><i style="background:#ef4444"></i>lemah</span>'+
+  '<span onclick="go(\'peta\')"><i style="background:#f59e0b"></i>sedang</span>'+
+  '<span onclick="go(\'peta\')"><i style="background:#22c55e"></i>kuat</span>'+
+  '<span onclick="bukaWilayah()">+ tambah wilayah</span></div></div><div>'+
+ '<div class="card"><h3>Proyeksi antar kandidat — klik untuk ubah</h3>'+
+  D.kandidat.map(k=>'<div class="row klik" onclick="bukaTabel(\'kandidat.csv\')"><span>'+(k.nomor==K()?'★ ':'')+esc(k.nama)+
+   '<span class="sub"> · '+esc(k.koalisi.replace(/\|/g,'+'))+'</span></span><b>'+n0(k.proyeksi)+' <span class="sub">'+pp(k.persen)+'</span></b></div>').join('')+
+  '<div class="mini">Proyeksi = DPT × turnout '+pc(r.turnout)+' × 97% sah × share. Share = survei (60%) + basis koalisi terkalibrasi k='+n1(r.kalibrasi_k)+' (25%) + door-to-door (15%); bobot dinormalkan pada data yang ada.</div></div>'+
+ '<div class="card" style="margin-top:12px"><h3>5 wilayah paling menentukan</h3>'+
+  [...D.wilayah].sort((a,b)=>b.dpt*(1-(b.ikc||0)/100)-a.dpt*(1-(a.ikc||0)/100)).slice(0,5)
+   .map(w=>'<div class="row klik" onclick="bukaWilayah(\''+w.kode+'\')"><span>'+wlink(w)+' '+ztag(w.zona)+
+    '</span><b>'+n0(w.dpt)+' <span class="sub">IKC '+n1(w.ikc)+'</span></b></div>').join('')+
+  '<div class="mini">Potensi belum tergarap = DPT × (100 − IKC)/100.</div></div></div></div>'}
+
+/* ================= PETA ================= */
+function vPeta(){document.getElementById('v-peta').innerHTML=
+ '<div class="grid g21"><div class="card"><h3 style="display:flex;gap:10px;align-items:center">Peta operasi'+
+ '<select id="layer" onchange="LAYER=this.value;peta()" style="margin-left:auto">'+
+ ['ikc|Kekuatan (IKC)','zona|Zona prioritas','dpt|Kepadatan pemilih','saksi|Cakupan saksi','gap|Defisit suara','drone|Jalur terbang drone']
+ .map(o=>'<option value="'+o.split('|')[0]+'"'+(LAYER===o.split('|')[0]?' selected':'')+'>'+o.split('|')[1]+'</option>').join('')+
+ '</select><button class="gh" style="margin-left:8px" onclick="bukaWilayah()">+ wilayah</button></h3>'+
+ '<canvas id="cv2" height="560"></canvas><div class="legend" id="lg2"></div></div>'+
+ '<div class="card"><h3>Detail wilayah</h3><div id="detail" class="sub">Klik titik pada peta — atau <span class="w" onclick="bukaWilayah()">tambah wilayah baru</span>.</div></div></div>'}
+function proj(w,W,H){const my=v=>Math.log(Math.tan(Math.PI/4+v*Math.PI/360))*180/Math.PI;
+ const xs=D.wilayah.map(v=>v.lon),ys=D.wilayah.map(v=>my(v.lat));
+ const x0=Math.min(...xs),x1=Math.max(...xs),y0=Math.min(...ys),y1=Math.max(...ys);
+ const pad=46,s=Math.min((W-pad*2)/((x1-x0)||.01),(H-pad*2)/((y1-y0)||.01));
+ return[pad+(w.lon-x0)*s+(W-pad*2-(x1-x0)*s)/2,H-pad-((my(w.lat)-y0)*s)-(H-pad*2-(y1-y0)*s)/2,s]}
+function peta(){if(!D)return;[['cv','ikc'],['cv2',LAYER],['cv3','drone']].forEach(([id,ly])=>{
+ const c=document.getElementById(id);if(!c||!c.offsetWidth)return;
+ const dpr=devicePixelRatio||1,W=c.offsetWidth,H=+(c.dataset.h||(c.dataset.h=c.getAttribute('height')));
+ c.width=W*dpr;c.style.height=H+'px';c.height=H*dpr;
+ const g=c.getContext('2d');g.scale(dpr,dpr);g.clearRect(0,0,W,H);
+ g.strokeStyle='#0f1826';g.lineWidth=1;
+ for(let i=0;i<W;i+=40){g.beginPath();g.moveTo(i,0);g.lineTo(i,H);g.stroke()}
+ for(let j=0;j<H;j+=40){g.beginPath();g.moveTo(0,j);g.lineTo(W,j);g.stroke()}
+ const maxD=Math.max(...D.wilayah.map(w=>w.dpt)),pts=[];
+ D.wilayah.forEach(w=>{const[x,y,s]=proj(w,W,H),rr=6+16*Math.sqrt(w.dpt/maxD);pts.push({w,x,y,r:rr});
+  let col;
+  if(ly==='zona')col={z0:'#22c55e',z1:'#ef4444',z2:'#38bdf8',z3:'#64748b'}[zcls(w.zona)];
+  else if(ly==='dpt')col=warna(1-(w.dpt/w.luas_km2)/Math.max(...D.wilayah.map(v=>v.dpt/v.luas_km2)));
+  else if(ly==='saksi')col=warna(w.saksi_cakupan);
+  else if(ly==='gap')col=warna(1-Math.max(0,w.suara_sah_proyeksi*.5-w.proyeksi[K()])/w.suara_sah_proyeksi*2);
+  else col=warna((w.ikc||0)/100);
+  if(ly==='drone'){const R=Math.sqrt(w.luas_km2/Math.PI)*s/111.32;
+   g.save();g.beginPath();g.arc(x,y,R,0,7);g.clip();g.strokeStyle='#38bdf855';g.lineWidth=.8;
+   const sp=Math.max(2,D.drone.jarak_jalur_m/1000*s/111.32);
+   for(let yy=y-R;yy<y+R;yy+=sp){g.beginPath();g.moveTo(x-R,yy);g.lineTo(x+R,yy);g.stroke()}
+   g.restore();g.strokeStyle='#38bdf8';g.lineWidth=1;g.beginPath();g.arc(x,y,R,0,7);g.stroke()}
+  g.beginPath();g.arc(x,y,rr,0,7);g.fillStyle=col;g.globalAlpha=.72;g.fill();g.globalAlpha=1;
+  g.lineWidth=SEL===w.kode?2.5:1;g.strokeStyle=SEL===w.kode?'#fff':'#0a0e14';g.stroke();
+  g.fillStyle='#cbd5e1';g.font='600 10px system-ui';g.textAlign='center';g.fillText(w.kecamatan,x,y+rr+12)});
+ c.onmousemove=e=>{const b=c.getBoundingClientRect(),p=pts.find(p=>Math.hypot(p.x-(e.clientX-b.left),p.y-(e.clientY-b.top))<p.r);
+  c.style.cursor=p?'pointer':'crosshair';
+  tip(e,p?'<b>'+esc(p.w.nama)+'</b><br>DPT '+n0(p.w.dpt)+' · '+n0(p.w.tps)+' TPS<br>IKC '+n1(p.w.ikc)+' · proyeksi '+n0(p.w.proyeksi[K()])+' ('+pc(p.w.share[K()])+')<br>saksi '+pc(p.w.saksi_cakupan)+' · '+esc(p.w.zona)+'<br><i>klik untuk buka & ubah</i>':null)};
+ c.onmouseleave=()=>tip(null,null);
+ c.onclick=e=>{const b=c.getBoundingClientRect(),p=pts.find(p=>Math.hypot(p.x-(e.clientX-b.left),p.y-(e.clientY-b.top))<p.r);
+  if(p){SEL=p.w.kode;detail(p.w);peta();if(id!=='cv2')bukaWilayah(p.w.kode)}else bukaWilayah()};
+ const lg=document.getElementById('lg2');
+ if(lg&&id==='cv2')lg.innerHTML=({zona:['BASIS|#22c55e','GARAP|#ef4444','AMANKAN|#38bdf8','EFISIENSI|#64748b']
+   .map(o=>'<span onclick="go(\'wilayah\',{filter:{zona:\''+o.split('|')[0]+'\'}})"><i style="background:'+o.split('|')[1]+'"></i>'+o.split('|')[0]+'</span>').join(''),
+   drone:'<span onclick="go(\'drone\')">lingkaran = luas wilayah · garis = jalur terbang '+n1(D.drone.jarak_jalur_m)+' m (sidelap '+pc(D.drone.parameter.overlap_samping)+') — klik untuk rencana</span>'}[LAYER]||
+   '<span><i style="background:#ef4444"></i>rendah</span><span><i style="background:#f59e0b"></i>sedang</span><span><i style="background:#22c55e"></i>tinggi</span><span>ukuran = DPT</span>')})}
+function detail(w){document.getElementById('detail').innerHTML=
+ '<div style="font-size:15px;font-weight:800">'+esc(w.nama)+'</div><div class="sub">'+esc(w.dapil)+' · '+n1(w.luas_km2)+' km² · '+n0(w.kk)+' KK</div>'+
+ '<div style="margin:10px 0">'+ztag(w.zona)+' <button class="gh" onclick="bukaWilayah(\''+w.kode+'\')">Buka & ubah</button></div>'+
+ [['DPT',n0(w.dpt)],['TPS',n0(w.tps)],['Kepadatan',n0(w.dpt/w.luas_km2)+' /km²'],['IKC',n1(w.ikc)+' / 100'],
+  ['Kelengkapan data',pc(w.kelengkapan)],['Basis koalisi',pc(w.basis)],
+  ['Survei',w.survei==null?'tidak ada sampel':pc(w.survei)+' ±'+pc(w.moe)+' (n='+n0(w.n_sampel)+')'],
+  ['Door-to-door',w.dtd==null?'—':pc(w.dtd)+' dari '+pc(w.dtd_cakupan)+' DPT terdata'],
+  ['Mesin darat',w.mesin==null?'—':pc(w.mesin)+' ('+n0(w.relawan_aktif)+' relawan aktif)'],
+  ['Proyeksi kita',n0(w.proyeksi[K()])+' ('+pc(w.share[K()])+')'],
+  ['Saksi',n0(w.saksi_terisi)+'/'+n0(w.tps)+' TPS ('+pc(w.saksi_cakupan)+')'],
+  ['TPS tanpa saksi',n0(w.tps_tanpa_saksi)+(w.rawan?' ⚠ rawan':'')],
+  ['Anggaran realisasi',rp(w.anggaran_realisasi)],['Biaya per suara',rp(w.biaya_per_suara)]]
+  .map(x=>'<div class="row"><span class="sub">'+x[0]+'</span><b>'+x[1]+'</b></div>').join('')}
+
+/* ================= WILAYAH ================= */
+const COL=[['nama','Wilayah',w=>wlink(w),0],['dapil','Dapil',w=>'<span class="w" onclick="event.stopPropagation();go(\'wilayah\',{filter:{dapil:\''+w.dapil+'\'}})">'+esc(w.dapil)+'</span>',0],
+ ['dpt','DPT',w=>n0(w.dpt),1],['tps','TPS',w=>n0(w.tps),1],
+ ['ikc','IKC',w=>'<div style="display:flex;gap:6px;align-items:center;justify-content:flex-end"><span>'+n1(w.ikc)+'</span><div class="bar" style="width:56px"><i style="width:'+(w.ikc||0)+'%;background:'+warna((w.ikc||0)/100)+'"></i></div></div>',1],
+ ['basis','Basis',w=>pc(w.basis),1],['survei','Survei',w=>w.survei==null?'<span class="sub">isi →</span>':pc(w.survei),1],
+ ['dtd','DTD',w=>pc(w.dtd),1],['mesin','Mesin darat',w=>pc(w.mesin),1],
+ ['proy','Proyeksi',w=>n0(w.proyeksi[K()]),1],['share','Share',w=>pc(w.share[K()]),1],
+ ['saksi_cakupan','Saksi',w=>'<span class="'+(w.saksi_cakupan>=.8?'up':w.saksi_cakupan>=.5?'wrn':'dn')+'">'+pc(w.saksi_cakupan)+'</span>',1],
+ ['zona','Zona',w=>ztag(w.zona),0],['kelengkapan','Data',w=>pc(w.kelengkapan),1]];
+function key(w,k){return k==='proy'?w.proyeksi[K()]:k==='share'?w.share[K()]:w[k]}
+function vWilayah(){if(!D)return;
+ let rows=D.wilayah.filter(w=>(!FILTER.zona||w.zona.startsWith(FILTER.zona))&&(!FILTER.dapil||w.dapil===FILTER.dapil)
+  &&(!FILTER.isu||w.isu.some(i=>i.isu===FILTER.isu))
+  &&(!FILTER.cari||w.nama.toLowerCase().includes(FILTER.cari.toLowerCase())));
+ rows=rows.sort((a,b)=>{const x=key(a,SORT.k),y=key(b,SORT.k);
+  return (typeof x==='string'?x.localeCompare(y):((x||0)-(y||0)))*SORT.d});
+ const chips=['zona','dapil','isu'].filter(k=>FILTER[k]).map(k=>'<span class="chip on" onclick="FILTER.'+k+'=null;vWilayah()">'+esc(FILTER[k])+' ×</span>').join('');
+ document.getElementById('v-wilayah').innerHTML='<div class="card"><h3 style="display:flex;gap:10px;align-items:center">'+
+ 'Semua wilayah ('+rows.length+') — klik nama untuk membuka & mengubah'+
+ '<input id="cari" placeholder="cari wilayah…" value="'+esc(FILTER.cari)+'" oninput="FILTER.cari=this.value;vWilayah();document.getElementById(\'cari\').focus()" style="margin-left:auto;width:180px">'+
+ '<button class="act" onclick="bukaWilayah()">+ Tambah wilayah</button>'+
+ '<button class="gh" onclick="bukaTabel(\'wilayah.csv\')">Edit tabel</button></h3>'+
+ (chips?'<div style="margin-bottom:8px">'+chips+'</div>':'')+
+ '<div class="scroll"><table><thead><tr>'+COL.map(c=>'<th class="'+(c[3]?'num':'')+'" onclick="SORT={k:\''+c[0]+'\',d:SORT.k===\''+c[0]+'\'?-SORT.d:-1};vWilayah()">'+c[1]+(SORT.k===c[0]?(SORT.d<0?' ▾':' ▴'):'')+'</th>').join('')+'</tr></thead><tbody>'+
+ rows.map(w=>'<tr class="klik" onclick="bukaWilayah(\''+w.kode+'\')">'+COL.map(c=>'<td class="'+(c[3]?'num':'')+'">'+c[2](w)+'</td>').join('')+'</tr>').join('')+
+ '</tbody></table></div><div class="mini">IKC = rata-rata tertimbang komponen yang datanya ADA; bobot komponen kosong dinormalkan ulang. Kolom "Data" = berapa persen bobot yang terisi.</div></div>'}
+
+/* ================= TARGET ================= */
+function vTarget(){const r=D.ringkas;
+ const per=D.wilayah.map(w=>({w,delta:w.proyeksi[K()]-w.suara_sah_proyeksi*(r.target/r.suara_sah_proyeksi)})).sort((a,b)=>a.delta-b.delta);
+ const mx=Math.max(...per.map(p=>Math.abs(p.delta)))||1;
+ document.getElementById('v-target').innerHTML='<div class="grid g4">'+
+ kpi('Target menang',n0(r.target),'= lawan terkuat × (1 + margin aman '+pc(D.konfigurasi.margin_aman)+')','',"go('konfig')")+
+ kpi('Proyeksi sekarang',n0(r.proyeksi_kita),pp(r.persen_kita),'',"go('wilayah')")+
+ kpi(r.gap>0?'Kekurangan':'Surplus',n0(Math.abs(r.gap)),r.gap>0?'harus dikejar':'aman',r.gap>0?'dn':'up',"go('simulasi')")+
+ kpi('Biaya menutup gap',rp(D.anggaran.biaya_menutup_gap),D.anggaran.gap_tertutup?'gap tertutup':'gap BELUM tertutup',D.anggaran.gap_tertutup?'up':'dn',"go('anggaran')")+
+ '</div><div class="card" style="margin-top:12px"><h3>Surplus / defisit per wilayah — klik baris</h3><table><tbody>'+
+ per.map(p=>'<tr class="klik" onclick="bukaWilayah(\''+p.w.kode+'\')"><td style="width:180px">'+wlink(p.w)+'</td>'+
+  '<td style="width:100%"><div style="position:relative;height:16px"><div style="position:absolute;left:50%;top:0;width:1px;height:100%;background:#334155"></div>'+
+  '<div style="position:absolute;top:3px;height:10px;border-radius:3px;background:'+(p.delta<0?'#ef4444':'#22c55e')+';'+
+  (p.delta<0?'right:50%;width:'+Math.abs(p.delta)/mx*49+'%':'left:50%;width:'+p.delta/mx*49+'%')+'"></div></div></td>'+
+  '<td class="num '+(p.delta<0?'dn':'up')+'">'+(p.delta<0?'':'+')+n0(p.delta)+'</td>'+
+  '<td class="num sub">'+pc(p.w.share[K()])+'</td><td>'+ztag(p.w.zona)+'</td></tr>').join('')+
+ '</tbody></table><div class="mini">Ambang wilayah = share target dikali suara sah wilayah.</div></div>'+
+ '<div class="card" style="margin-top:12px"><h3>Rencana penutup gap (termurah dulu) — klik baris</h3>'+
+ (D.anggaran.rencana_alokasi.length?'<table><thead><tr><th>#</th><th>Wilayah</th><th>Zona</th><th class="num">Tambahan suara</th><th class="num">Biaya</th><th class="num">Rp/suara</th><th class="num">Kum. suara</th><th class="num">Kum. biaya</th></tr></thead><tbody>'+
+ D.anggaran.rencana_alokasi.map((a,i)=>'<tr class="klik" onclick="bukaWilayah(\''+a.kode+'\')"><td>'+(i+1)+'</td><td>'+esc(a.nama)+'</td><td>'+ztag(a.zona)+'</td>'+
+  '<td class="num">'+n0(a.dipakai_suara)+'</td><td class="num">'+rp(a.dipakai_biaya)+'</td><td class="num">'+rp(a.biaya_per_suara)+'</td>'+
+  '<td class="num">'+n0(a.kumulatif_suara)+'</td><td class="num">'+rp(a.kumulatif_biaya)+'</td></tr>').join('')+'</tbody></table>'
+ :'<div class="sub">Tidak ada gap pada proyeksi saat ini — anggaran diarahkan ke penjagaan basis dan saksi TPS.</div>')+
+ '<div class="mini">Ruang naik = swing maksimum '+pc(D.konfigurasi.swing_maksimal_per_program)+' × (100 − IKC)/100; Rp/suara = biaya dasar × (1 + (100−IKC)/100 × 1,5).</div></div>'}
+
+/* ================= KURSI ================= */
+function vKursi(){document.getElementById('v-kursi').innerHTML=
+ '<div class="card"><h3>Alokasi kursi Sainte-Laguë (pembagi 1,3,5,7…) — mode DPR/DPRD</h3>'+
+ '<div class="mini" style="margin:0 0 10px">Suara partai dari hasil pemilu terakhir per dapil. Klik baris partai untuk mengubah data caleg. <span class="w" onclick="go(\'konfig\')">Ubah jumlah kursi per dapil</span>.</div>'+
+ '<div class="grid g2">'+D.kursi.map(k=>'<div class="card" style="background:var(--pnl2)"><h3>'+esc(k.dapil)+' — '+k.kursi+' kursi</h3>'+
+ '<div class="row klik" onclick="go(\'wilayah\',{filter:{dapil:\''+k.dapil+'\'}})"><span class="sub">Total suara sah</span><b>'+n0(k.total_suara)+'</b></div>'+
+ '<div class="row"><span class="sub">Harga kursi terakhir</span><b>'+n0(k.harga_kursi)+'</b></div>'+
+ '<table style="margin-top:8px"><thead><tr><th>Partai</th><th class="num">Suara</th><th class="num">%</th><th class="num">Kursi</th><th>Caleg kita</th></tr></thead><tbody>'+
+ k.partai.map(p=>'<tr class="klik" onclick="bukaTabel(\'caleg.csv\',{dapil:\''+k.dapil+'\',partai:\''+p.partai+'\'})"><td>'+esc(p.partai)+'</td>'+
+  '<td class="num">'+n0(p.suara)+'</td><td class="num">'+pp(p.persen)+'</td><td class="num"><b>'+p.kursi+'</b></td>'+
+  '<td>'+(p.kita_nama?'<span class="'+(p.kita_lolos?'up':'dn')+'">'+(p.kita_lolos?'LOLOS':'belum')+'</span> <span class="sub">'+n0(p.kita_suara)+' vs ambang '+n0(p.ambang_internal)+'</span>':'<span class="sub">—</span>')+'</td></tr>').join('')+
+ '</tbody></table></div>').join('')+'</div></div>'}
+
+/* ================= DRONE ================= */
+function vDrone(){const d=D.drone,p=d.parameter;
+ document.getElementById('v-drone').innerHTML='<div class="grid g4">'+
+ kpi('GSD',n1(d.gsd_cm_px)+' cm/px','tinggi '+p.tinggi_terbang_m+' m · fokal '+p.fokal_mm+' mm','',"go('konfig')")+
+ kpi('Luas per sortie',n0(d.luas_per_sortie_ha)+' ha',n1(d.kecepatan_ms)+' m/s · endurance efektif '+Math.round(p.endurance_menit*(1-p.cadangan_baterai))+' mnt','',"go('konfig')")+
+ kpi('Total misi',n0(d.sortie)+' sortie',n1(d.total_target_km2)+' km² · '+n1(d.jam_terbang)+' jam','',"bukaTabel('drone_misi.csv')")+
+ kpi('Biaya & waktu',rp(d.biaya),d.hari+' hari · '+d.baterai_set+' set baterai','',"go('konfig')")+
+ '</div><div class="grid g21" style="margin-top:12px"><div class="card"><h3>Rencana jalur terbang — klik wilayah</h3>'+
+ '<canvas id="cv3" height="440"></canvas><div class="legend"><span onclick="bukaTabel(\'drone_misi.csv\')">spasi jalur '+n1(d.jarak_jalur_m)+' m — klik untuk atur misi</span></div></div>'+
+ '<div class="card klik" onclick="go(\'konfig\')"><h3>Parameter fotogrametri — klik untuk ubah</h3>'+
+ [['Sensor',p.sensor_lebar_mm+' × '+p.sensor_tinggi_mm+' mm'],['Resolusi',n0(p.lebar_piksel)+' × '+n0(p.tinggi_piksel)+' px'],
+  ['Fokal',p.fokal_mm+' mm'],['Tinggi terbang',p.tinggi_terbang_m+' m'],['GSD',n1(d.gsd_cm_px)+' cm/px'],
+  ['Lebar liputan',n1(d.swath_m)+' m'],['Overlap depan',pc(p.overlap_depan)],['Overlap samping',pc(p.overlap_samping)],
+  ['Jarak antar jalur',n1(d.jarak_jalur_m)+' m'],['Kecepatan maks',n1(d.kecepatan_ms)+' m/s'],
+  ['Interval jepret',p.interval_jepret_detik+' detik'],['Cadangan baterai',pc(p.cadangan_baterai)]]
+  .map(x=>'<div class="row"><span class="sub">'+x[0]+'</span><b>'+x[1]+'</b></div>').join('')+
+ '<div class="mini">GSD = (lebar sensor × tinggi terbang × 100)/(fokal × lebar piksel). Luas/sortie = kecepatan × endurance efektif × jarak jalur.</div></div></div>'+
+ '<div class="card" style="margin-top:12px"><h3>Daftar misi — klik baris untuk ubah</h3><table><thead><tr><th>Wilayah</th><th>Tujuan</th><th class="num">Luas (km²)</th><th class="num">Sortie</th><th class="num">Jam</th><th class="num">Biaya</th><th class="num">DPT/km²</th><th class="num">KK</th><th>Status</th></tr></thead><tbody>'+
+ d.misi.map(m=>'<tr class="klik" onclick="bukaTabel(\'drone_misi.csv\',{kode_wilayah:\''+m.kode+'\'})"><td>'+esc(m.nama)+'</td><td class="sub">'+esc(m.tujuan)+'</td>'+
+  '<td class="num">'+n1(m.luas_km2)+'</td><td class="num">'+n0(m.sortie)+'</td><td class="num">'+n1(m.jam_terbang)+'</td>'+
+  '<td class="num">'+rp(m.biaya)+'</td><td class="num">'+n0(m.dpt_per_km2)+'</td><td class="num">'+n0(m.rumah_perkiraan)+'</td>'+
+  '<td><span class="tag '+(m.status==='selesai'?'z0':m.status==='terbang'?'z2':'z3')+'">'+esc(m.status)+'</span></td></tr>').join('')+
+ '</tbody></table><div class="mini">Ortofoto dipakai untuk mencocokkan jumlah rumah/KK dengan DPT, menentukan titik APK, memetakan akses jalan, dan menyusun rute kunjungan. Izin ruang udara tetap urusan operator.</div></div>'}
+
+/* ================= SAKSI ================= */
+function vSaksi(){const s=D.saksi;
+ document.getElementById('v-saksi').innerHTML='<div class="grid g4">'+
+ kpi('Cakupan saksi',pc(s.cakupan),n0(s.ada)+' dari '+n0(s.butuh)+' orang',s.cakupan>=.9?'up':s.cakupan>=.7?'wrn':'dn',"bukaTabel('saksi.csv')")+
+ kpi('Kekurangan saksi',n0(s.kurang),rp(s.biaya_kurang)+' untuk melengkapi','',"bukaTabel('saksi.csv')")+
+ kpi('TPS rawan tanpa saksi',n0(s.tps_rawan_tanpa_saksi),'wilayah kekuatan di bawah median','dn',"go('wilayah',{filter:{zona:'GARAP'}})")+
+ kpi('Suara berisiko',n0(s.suara_beresiko),'faktor risiko '+pc(s.risiko_faktor)+' — klik untuk simulasi','dn',"go('simulasi')")+
+ '</div><div class="card" style="margin-top:12px"><h3>Kebutuhan saksi per wilayah — klik baris</h3><table><thead><tr><th>Wilayah</th><th class="num">TPS</th><th class="num">Terisi</th><th class="num">Butuh saksi</th><th class="num">Cakupan</th><th class="num">Terlatih</th><th class="num">Biaya penuh</th><th>Status</th></tr></thead><tbody>'+
+ [...D.wilayah].sort((a,b)=>a.saksi_cakupan-b.saksi_cakupan).map(w=>'<tr class="klik" onclick="bukaWilayah(\''+w.kode+'\',\'saksi\')"><td>'+wlink(w)+'</td>'+
+  '<td class="num">'+n0(w.tps)+'</td><td class="num">'+n0(w.saksi_terisi)+'</td><td class="num">'+n0(w.saksi_butuh)+'</td>'+
+  '<td class="num"><div style="display:flex;gap:6px;justify-content:flex-end;align-items:center"><span>'+pc(w.saksi_cakupan)+'</span>'+
+  '<div class="bar" style="width:56px"><i style="width:'+Math.min(100,w.saksi_cakupan*100)+'%;background:'+warna(w.saksi_cakupan)+'"></i></div></div></td>'+
+  '<td class="num">'+n0(w.saksi_terlatih)+'</td><td class="num">'+rp(w.saksi_butuh*D.konfigurasi.honor_saksi)+'</td>'+
+  '<td>'+(w.rawan?'<span class="tag z1">RAWAN</span>':'<span class="tag z0">aman</span>')+'</td></tr>').join('')+
+ '</tbody></table><div class="mini">Butuh = TPS × '+D.konfigurasi.saksi_per_tps+' orang. RAWAN = kekuatan di bawah median DAN cakupan &lt; 80%.</div></div>'}
+
+/* ================= ISU ================= */
+function vIsu(){document.getElementById('v-isu').innerHTML=
+ '<div class="card"><h3>Isu dominan — klik untuk menyaring wilayah</h3><table><thead><tr><th>Isu</th><th class="num">Penyebutan</th><th class="num">Sentimen</th><th style="width:40%">Arah</th></tr></thead><tbody>'+
+ D.isu.map(i=>'<tr class="klik" onclick="go(\'wilayah\',{filter:{isu:\''+esc(i.isu)+'\'}})"><td>'+esc(i.isu)+'</td><td class="num">'+n0(i.sebut)+'</td>'+
+  '<td class="num '+(i.sentimen>0?'up':'dn')+'">'+(i.sentimen>0?'+':'')+n1(i.sentimen*100)+'</td>'+
+  '<td><div style="position:relative;height:14px"><div style="position:absolute;left:50%;width:1px;height:100%;background:#334155"></div>'+
+  '<div style="position:absolute;top:2px;height:10px;border-radius:3px;background:'+(i.sentimen<0?'#ef4444':'#22c55e')+';'+
+  (i.sentimen<0?'right:50%;width:'+Math.abs(i.sentimen)*49+'%':'left:50%;width:'+i.sentimen*49+'%')+'"></div></div></td></tr>').join('')+
+ '</tbody></table></div><div class="card" style="margin-top:12px"><h3>Isu per wilayah — klik baris untuk ubah</h3>'+
+ '<table><thead><tr><th>Wilayah</th><th>Isu 1</th><th>Isu 2</th><th>Isu 3</th><th class="num">IKC</th></tr></thead><tbody>'+
+ D.wilayah.map(w=>'<tr class="klik" onclick="bukaWilayah(\''+w.kode+'\',\'isu\')"><td>'+wlink(w)+'</td>'+
+  [0,1,2].map(i=>{const x=w.isu[i];return'<td>'+(x?esc(x.isu)+' <span class="sub '+(x.sentimen>0?'up':'dn')+'">'+(x.sentimen>0?'+':'')+n1(x.sentimen*100)+'</span>':'<span class="sub">— isi</span>')+'</td>'}).join('')+
+  '<td class="num">'+n1(w.ikc)+'</td></tr>').join('')+'</tbody></table></div>'}
+
+/* ================= ANGGARAN ================= */
+function vAnggaran(){const a=D.anggaran;
+ document.getElementById('v-anggaran').innerHTML='<div class="grid g4">'+
+ kpi('Rencana',rp(a.rencana),'klik untuk ubah','',"bukaTabel('anggaran.csv')")+
+ kpi('Realisasi',rp(a.realisasi),pc(a.realisasi/a.rencana)+' terpakai','',"bukaTabel('anggaran.csv')")+
+ kpi('Biaya per suara',rp(a.biaya_per_suara),'realisasi ÷ proyeksi suara','',"go('target')")+
+ kpi('Sisa',rp(a.rencana-a.realisasi),'tersedia untuk menutup gap','',"go('target')")+
+ '</div><div class="card" style="margin-top:12px"><h3>Efisiensi per wilayah — klik baris</h3><table><thead><tr><th>Wilayah</th><th>Zona</th><th class="num">Rencana</th><th class="num">Realisasi</th><th class="num">Serapan</th><th class="num">Proyeksi</th><th class="num">Rp/suara</th></tr></thead><tbody>'+
+ [...D.wilayah].sort((x,y)=>(y.biaya_per_suara||0)-(x.biaya_per_suara||0)).map(w=>'<tr class="klik" onclick="bukaWilayah(\''+w.kode+'\',\'anggaran\')"><td>'+wlink(w)+'</td>'+
+  '<td>'+ztag(w.zona)+'</td><td class="num">'+rp(w.anggaran_rencana)+'</td><td class="num">'+rp(w.anggaran_realisasi)+'</td>'+
+  '<td class="num">'+pc(w.anggaran_realisasi/w.anggaran_rencana)+'</td><td class="num">'+n0(w.proyeksi[K()])+'</td>'+
+  '<td class="num '+(w.biaya_per_suara>a.biaya_per_suara?'dn':'up')+'">'+rp(w.biaya_per_suara)+'</td></tr>').join('')+
+ '</tbody></table><div class="mini">Merah = di atas rata-rata; cek apakah memang medan tempur atau sekadar bocor.</div></div>'}
+
+/* ================= SIMULASI ================= */
+const sl=(id,lab,mn,mx,val,unit)=>'<div style="margin-bottom:12px"><div style="display:flex;justify-content:space-between">'+
+ '<span class="sub">'+lab+'</span><b id="'+id+'v">'+n1(val)+unit+'</b></div>'+
+ '<input type="range" id="'+id+'" min="'+mn+'" max="'+mx+'" step="0.5" value="'+val+'" oninput="document.getElementById(\''+id+'v\').textContent=this.value+\''+unit+'\';sim()"></div>';
+function vSimulasi(){const r=D.ringkas;
+ document.getElementById('v-simulasi').innerHTML='<div class="grid g21"><div class="card"><h3>Simulasi skenario</h3>'+
+ sl('turnout','Turnout',40,95,r.turnout*100,'%')+sl('swingBasis','Kenaikan share zona BASIS',-5,15,0,' poin')+
+ sl('swingGarap','Kenaikan share zona GARAP',-5,15,0,' poin')+sl('saksi','Cakupan saksi',0,100,D.saksi.cakupan*100,'%')+
+ sl('serangan','Serangan lawan (share turun merata)',0,10,0,' poin')+
+ sl('risiko','Risiko suara hilang di TPS tanpa saksi',0,20,D.konfigurasi.risiko_selisih_tanpa_saksi*100,'%')+
+ '<button class="gh" onclick="terapkanSimulasi()">Jadikan turnout & risiko ini permanen di konfigurasi</button>'+
+ '<div class="mini">Rumus sama dengan mesin. Kolom "Dasar" = proyeksi mesin tanpa potongan risiko, jadi selisihnya adalah harga dari saksi yang belum lengkap.</div></div>'+
+ '<div class="card"><h3>Hasil skenario</h3><div id="simOut"></div></div></div>'+
+ '<div class="card" style="margin-top:12px"><h3>Dampak per wilayah — klik baris</h3><div id="simTab"></div></div>';sim()}
+function sim(){if(!D||!document.getElementById('turnout'))return;const g=id=>+document.getElementById(id).value;
+ const to=g('turnout')/100,sb=g('swingBasis')/100,sg=g('swingGarap')/100,sk=g('saksi')/100,at=g('serangan')/100,rk=g('risiko')/100;
+ let kita=0,sah=0,lawan={},rows=[];
+ D.wilayah.forEach(w=>{const s=w.dpt*to*0.97;sah+=s;
+  const bump=w.zona.startsWith('BASIS')?sb:w.zona.startsWith('GARAP')?sg:0;
+  const sh=Math.max(0,Math.min(1,(w.share[K()]||0)+bump-at)),v=s*sh;
+  const risiko=w.tps*(1-sk)*D.konfigurasi.maks_pemilih_per_tps*to*rk*(w.share[K()]||0);
+  const bersih=Math.max(0,v-risiko);kita+=bersih;
+  Object.keys(w.proyeksi).forEach(n=>{if(n!==K())lawan[n]=(lawan[n]||0)+s*(w.share[n]||0)});
+  rows.push({w,lama:w.proyeksi[K()],baru:bersih,risiko})});
+ const lw=Object.entries(lawan).sort((a,b)=>b[1]-a[1])[0]||['—',0];
+ const share=kita/sah,shareL=lw[1]/sah,margin=share-shareL,sd=D.ringkas.sd_total/100;
+ const p=cdf(margin/(sd*Math.SQRT2)),target=lw[1]*(1+D.konfigurasi.margin_aman),gap=target-kita;
+ document.getElementById('simOut').innerHTML=
+  [['Suara kita',n0(kita)+' ('+pc(share)+')'],['Lawan terkuat',n0(lw[1])+' ('+pc(shareL)+')'],
+   ['Selisih',(margin>0?'+':'')+pp(margin*100)+' poin'],['Target menang',n0(target)],
+   [gap>0?'Kekurangan':'Surplus',n0(Math.abs(gap))],
+   ['Suara hilang karena TPS tanpa saksi',n0(rows.reduce((a,b)=>a+b.risiko,0))],
+   ['Peluang menang',pp(p*100)]].map(x=>'<div class="row"><span class="sub">'+x[0]+'</span><b class="'+(x[0]==='Peluang menang'?(p>.6?'up':'dn'):'')+'">'+x[1]+'</b></div>').join('')+
+  '<div class="gauge"><i style="width:'+Math.min(100,p*100)+'%"></i><u style="left:50%"></u></div><div class="sub">garis putih = titik seimbang 50%</div>';
+ document.getElementById('simTab').innerHTML='<table><thead><tr><th>Wilayah</th><th>Zona</th><th class="num">Dasar</th><th class="num">Skenario</th><th class="num">Selisih</th><th class="num">Hilang tanpa saksi</th></tr></thead><tbody>'+
+ rows.sort((a,b)=>(a.baru-a.lama)-(b.baru-b.lama)).map(x=>'<tr class="klik" onclick="bukaWilayah(\''+x.w.kode+'\')"><td>'+wlink(x.w)+'</td>'+
+  '<td>'+ztag(x.w.zona)+'</td><td class="num">'+n0(x.lama)+'</td><td class="num">'+n0(x.baru)+'</td>'+
+  '<td class="num '+(x.baru>=x.lama?'up':'dn')+'">'+(x.baru>=x.lama?'+':'')+n0(x.baru-x.lama)+'</td>'+
+  '<td class="num dn">'+n0(x.risiko)+'</td></tr>').join('')+'</tbody></table>'}
+async function terapkanSimulasi(){const g=id=>+document.getElementById(id).value;
+ const k=await api('/api/konfigurasi');k.turnout_proyeksi=g('turnout')/100;k.risiko_selisih_tanpa_saksi=g('risiko')/100;
+ const r=await api('/api/konfigurasi',k);if(r.ok){await muat();toast('Konfigurasi diperbarui & dihitung ulang')}else toast('Gagal',1)}
+addEventListener('resize',()=>peta());
+</script>
+<script src="editor.js"></script>
+<script src="tambahan.js"></script>
+<script src="tambahan2.js"></script>
+<script src="tambahan3.js"></script></body></html>

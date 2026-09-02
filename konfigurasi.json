@@ -1,0 +1,161 @@
+{
+  "sumber_data": "contoh",
+  "wilayah_kerja": "Kabupaten Sleman, DI Yogyakarta",
+  "jenis_pemilihan": "bupati",
+  "tanggal_pemungutan": "2029-11-27",
+  "kandidat_kita": "01",
+  "koalisi_pengusung": [
+    "PDIP",
+    "PKB",
+    "PSI"
+  ],
+  "maks_pemilih_per_tps": 600,
+  "saksi_per_tps": 2,
+  "honor_saksi": 250000,
+  "turnout_proyeksi": 0.74,
+  "margin_aman": 0.05,
+  "bobot_ikc": {
+    "basis_koalisi": 0.22,
+    "survei": 0.26,
+    "dtd": 0.15,
+    "mesin_darat": 0.08,
+    "partai": 0.14,
+    "ormas": 0.11,
+    "tokoh": 0.04
+  },
+  "batas_kelengkapan_data": 0.4,
+  "swing_maksimal_per_program": 0.05,
+  "drone": {
+    "sensor_lebar_mm": 13.2,
+    "sensor_tinggi_mm": 8.8,
+    "fokal_mm": 8.8,
+    "lebar_piksel": 5472,
+    "tinggi_piksel": 3648,
+    "tinggi_terbang_m": 120,
+    "overlap_depan": 0.75,
+    "overlap_samping": 0.65,
+    "interval_jepret_detik": 2,
+    "endurance_menit": 28,
+    "cadangan_baterai": 0.25,
+    "kecepatan_maks_ms": 15,
+    "sortie_per_hari": 12,
+    "biaya_per_sortie": 85000
+  },
+  "kursi_dapil": {
+    "Dapil 1": 11,
+    "Dapil 2": 10,
+    "Dapil 3": 9,
+    "Dapil 4": 10,
+    "Dapil 5": 10
+  },
+  "catatan": "Ganti seluruh isi data/*.csv dengan data resmi (DPT KPU, hasil Pemilu sebelumnya, survei berlisensi). Selama sumber_data='contoh' seluruh angka di dasbor ditandai SIMULASI.",
+  "risiko_selisih_tanpa_saksi": 0.05,
+  "catatan_risiko_saksi": "Bagian suara kita di TPS tanpa saksi yang dianggap berisiko hilang/berubah karena tidak ada C-Hasil pembanding. Ubah sesuai pengalaman lapangan; 0.05 = 5%.",
+  "faktor_risiko": {
+    "guncangan_turnout": 0.08,
+    "guncangan_ormas": 0.2,
+    "guncangan_isu": 0.15,
+    "guncangan_saksi": 1,
+    "tingkat_keyakinan": 0.95
+  },
+  "worker": {
+    "aktif": true,
+    "otak": "auto",
+    "model_lokal": "llama3.2",
+    "url_ollama": "http://127.0.0.1:11434",
+    "maks_rekomendasi": 12,
+    "otak_urutan": [
+      "neutron",
+      "groq",
+      "gemini",
+      "ollama"
+    ],
+    "model_groq": "llama-3.3-70b-versatile",
+    "model_gemini": [
+      "gemini-2.0-flash",
+      "gemini-flash-latest",
+      "gemini-2.5-flash"
+    ]
+  },
+  "tingkat_analisis": "kecamatan",
+  "aturan_pemilihan": {
+    "presiden": {
+      "nama": "Pemilihan Presiden",
+      "metode": "mayoritas_sebaran",
+      "ambang": 0.5,
+      "sebaran_persen": 0.2,
+      "sebaran_wilayah_min": 0.5,
+      "dua_putaran": true,
+      "tingkat": "provinsi",
+      "catatan": "Menang bila >50% suara sah DAN >=20% suara di lebih dari separuh provinsi; kalau tidak, putaran kedua."
+    },
+    "dpr_ri": {
+      "nama": "DPR RI",
+      "metode": "sainte_lague",
+      "ambang_parlemen": 0.04,
+      "tingkat": "kabupaten",
+      "catatan": "Ambang parlemen nasional 4%; kursi dibagi Sainte-Lague per dapil; kursi internal ke suara pribadi terbanyak."
+    },
+    "dprd_provinsi": {
+      "nama": "DPRD Provinsi (DPRD I)",
+      "metode": "sainte_lague",
+      "ambang_parlemen": 0,
+      "tingkat": "kabupaten",
+      "catatan": "Tanpa ambang parlemen daerah; Sainte-Lague per dapil provinsi."
+    },
+    "dprd_kabkota": {
+      "nama": "DPRD Kabupaten/Kota (DPRD II)",
+      "metode": "sainte_lague",
+      "ambang_parlemen": 0,
+      "tingkat": "kecamatan",
+      "catatan": "Sainte-Lague per dapil kabupaten/kota."
+    },
+    "gubernur": {
+      "nama": "Pemilihan Gubernur",
+      "metode": "pluralitas",
+      "tingkat": "kabupaten",
+      "catatan": "Suara terbanyak menang (kecuali daerah yang aturannya 50%+1)."
+    },
+    "bupati": {
+      "nama": "Pemilihan Bupati",
+      "metode": "pluralitas",
+      "tingkat": "kecamatan",
+      "catatan": "Suara terbanyak menang."
+    },
+    "walikota": {
+      "nama": "Pemilihan Wali Kota",
+      "metode": "pluralitas",
+      "tingkat": "kecamatan",
+      "catatan": "Suara terbanyak menang."
+    },
+    "kepala_desa": {
+      "nama": "Pemilihan Kepala Desa",
+      "metode": "pluralitas",
+      "tingkat": "rw",
+      "catatan": "Pilkades: suara terbanyak. Unit analisis turun ke RW/dusun."
+    },
+    "rt_rw": {
+      "nama": "Pemilihan RT / RW",
+      "metode": "pluralitas",
+      "tingkat": "rt",
+      "catatan": "Pemilihan/musyawarah warga per RT-RW. Unit analisis = RT."
+    },
+    "camat": {
+      "nama": "Camat (penunjukan bupati/wali kota)",
+      "metode": "penunjukan",
+      "tingkat": "kecamatan",
+      "catatan": "Camat TIDAK dipilih lewat pemungutan suara. Mode ini jadi peta dukungan & pemangku kepentingan, bukan proyeksi suara."
+    },
+    "lurah": {
+      "nama": "Lurah (penunjukan ASN)",
+      "metode": "penunjukan",
+      "tingkat": "desa",
+      "catatan": "Lurah TIDAK dipilih lewat pemungutan suara. Mode ini jadi peta dukungan & pemangku kepentingan."
+    }
+  },
+  "struktur_partai": {
+    "pemilih_per_ranting": 2500,
+    "pengurus_ideal_per_ranting": 9,
+    "kader_per_1000_dpt": 8
+  }
+}

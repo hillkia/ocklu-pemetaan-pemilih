@@ -1,0 +1,7 @@
+tahun,jenis,wilayah,pemenang,nomor,partai_pengusung,suara,persen,turnout,lawan_utama,suara_lawan,selisih_persen,petahana_ikut,hasil_petahana,catatan
+2010,bupati,Kabupaten Sleman,Nama Petahana Lama (contoh),01,GOLKAR+PAN,268450,52.1,71.4,Penantang A (contoh),210330,11.3,tidak,-,Kursi kosong; dua periode berikutnya dikuasai keluarga yang sama
+2015,bupati,Kabupaten Sleman,Nama Petahana Lama (contoh),01,GOLKAR+PAN+GERINDRA,301220,57.8,68.9,Penantang B (contoh),219880,15.7,ya,menang,Petahana periode ke-2; margin melebar
+2020,bupati,Kabupaten Sleman,Calon B (contoh),02,GERINDRA+GOLKAR,289640,49.2,72.1,Penantang C (contoh),231150,9.9,tidak,-,Estafet ke kerabat petahana lama (menantu)
+2024,bupati,Kabupaten Sleman,Calon B (contoh),02,GERINDRA+GOLKAR+PAN,318770,53.6,74.3,Calon A (contoh),256110,10.5,ya,menang,Petahana periode ke-1 versi dirinya; koalisi bertambah PAN
+2019,dprd_kabkota,Kabupaten Sleman,PDIP,-,PDIP,198340,22.9,79.2,GOLKAR,131400,7.7,-,-,PDIP kursi terbanyak
+2024,dprd_kabkota,Kabupaten Sleman,PDIP,-,PDIP,205110,23.4,78.1,GERINDRA,148900,6.4,-,-,PDIP bertahan; GERINDRA naik

@@ -1,0 +1,7 @@
+nama,peran,hubungan_dengan,jenis_hubungan,jabatan,periode,partai,masih_menjabat,catatan
+Nama Petahana Lama (contoh),tokoh lama,-,-,Bupati,2010-2015 & 2015-2020,GOLKAR,tidak,Dua periode; tidak boleh maju lagi di jabatan yang sama
+Calon B (contoh),petahana,Nama Petahana Lama (contoh),menantu,Bupati,2020-2024 & 2024-2029,GERINDRA,ya,Periode ke-2 berjalan; setelah ini tidak boleh maju lagi untuk jabatan yang sama
+Kerabat C (contoh),keluarga petahana,Calon B (contoh),adik kandung,Ketua DPRD,2024-2029,GERINDRA,ya,Menguasai lembaga legislatif
+Kerabat D (contoh),keluarga petahana,Nama Petahana Lama (contoh),anak kandung,Anggota DPR RI,2019-2024 & 2024-2029,GOLKAR,ya,Jalur pusat
+Kerabat E (contoh),keluarga petahana,Calon B (contoh),istri/suami,Ketua TP PKK,2020-2029,-,ya,Jaringan PKK sampai tingkat desa
+Calon A (contoh),calon kita,-,-,Anggota DPRD,2019-2024 & 2024-2029,PDIP,ya,Tidak punya hubungan kerabat dengan petahana
