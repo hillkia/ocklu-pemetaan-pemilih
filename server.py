@@ -22,7 +22,8 @@ BASE = os.path.dirname(os.path.abspath(__file__))
 WEB, DATA = os.path.join(BASE, 'web'), os.path.join(BASE, 'data')
 MASUK, SELESAI, CADANGAN = os.path.join(DATA, 'masuk'), os.path.join(DATA, 'masuk', 'selesai'), os.path.join(DATA, 'cadangan')
 for d in (MASUK, SELESAI, CADANGAN): os.makedirs(d, exist_ok=True)
-PORT = int(sys.argv[1]) if len(sys.argv) > 1 else 4488
+import os
+PORT = int(sys.argv[1]) if len(sys.argv) > 1 else int(os.environ.get("PORT", 4488))
 LOG = os.path.join(DATA, 'log_impor.json')
 KUNCI = threading.Lock()
 
