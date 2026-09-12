@@ -7,3 +7,5 @@ data/ledger.jsonl
 data/log_impor.json
 mythos.json
 .DS_Store
+
+*.log

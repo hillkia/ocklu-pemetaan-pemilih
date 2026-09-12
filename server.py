@@ -226,7 +226,7 @@ class H(http.server.SimpleHTTPRequestHandler):
 hitung()
 threading.Thread(target=pengawas, daemon=True).start()
 socketserver.TCPServer.allow_reuse_address = True
-with socketserver.TCPServer(("127.0.0.1", PORT), H) as s:
+with socketserver.TCPServer(("0.0.0.0", PORT), H) as s:
     print(f"Ocklu Pemetaan Pemilih -> http://127.0.0.1:{PORT}/   (Ctrl+C berhenti)")
     print(f"Impor otomatis: taruh CSV di {MASUK}")
     s.serve_forever()
