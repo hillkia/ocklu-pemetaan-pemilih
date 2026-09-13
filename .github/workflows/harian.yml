@@ -1,0 +1,67 @@
+name: Kerja harian Pemetaan Pemilih
+
+# Jalan di komputer GitHub, bukan di laptop. Laptop boleh mati.
+on:
+  schedule:
+    - cron: "15 2 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ocklu-pemetaan-pemilih-harian
+  cancel-in-progress: false
+
+jobs:
+  kerja:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      AWAN: "1"
+      PROYEK: ocklu-pemetaan-pemilih
+      GUDANG_DATA: hillkia/ocklu-data
+      GITHUB_TOKEN: ${{ secrets.GUDANG_TOKEN }}
+      GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      SMTP_USER: ${{ secrets.SMTP_USER }}
+      SMTP_PASS: ${{ secrets.SMTP_PASS }}
+      TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+      TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Pasang paket kalau ada daftarnya
+        run: '[ -s requirements.txt ] && pip install -r requirements.txt || echo "tanpa paket tambahan"'
+
+      - name: Ambil catatan kemarin dari gudang
+        run: |
+          python3 -c "import simpanan; print(simpanan.pulihkan(paksa=True))" || echo "gudang masih kosong"
+
+      - name: Kerja hari ini
+        run: |
+          python3 harian.py
+
+      - name: Simpan catatan ke gudang
+        if: always()
+        run: |
+          python3 -c "import simpanan; print(simpanan.simpan(paksa=True))"
+
+      - name: Kabari pemilik
+        if: always()
+        run: |
+          python3 kabar.py "ocklu-pemetaan-pemilih: putaran kerja selesai"
+
+      - name: Simpan laporan ke gudang kode
+        if: always()
+        run: |
+          git config user.name "ocklu-pemetaan-pemilih"
+          git config user.email "hillkiacakep@gmail.com"
+          git add LAPORAN.md 2>/dev/null || true
+          git diff --staged --quiet || git commit -m "laporan harian"
+          git pull --rebase --autostash origin "${GITHUB_REF_NAME}" || true
+          git push origin "HEAD:${GITHUB_REF_NAME}" || true
