@@ -1,6 +1,6 @@
 # Pemetaan Pemilih — laporan
 
-_diperbarui 2026-10-31 08:27_
+_diperbarui 2026-11-01 09:17_
 
 - **tingkat**: -
 - **baris**: 17
